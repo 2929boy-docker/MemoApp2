@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   ScrollView, TextInput, StyleSheet,
 } from 'react-native';
@@ -18,7 +18,7 @@ export default function MemoCreateScreen(props) {
     const ref = db.collection(`users/${currentUser.uid}/memos`);
     ref.add({
       bodyText,
-      updateAt: new Date(),
+      updatedAt: new Date(),
     })
       .then((docRef) => {
         console.log('Created!', docRef.id);
