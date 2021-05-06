@@ -13,7 +13,7 @@ export default function LogOutButton() {
       .then(() => {
         navigation.reset({
           index: 0,
-          routes: [{ name: 'LogIn' }],
+          routes: [{ name: 'Login' }],
         });
       })
       .catch(() => {
