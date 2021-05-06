@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View, TouchableOpacity, Alert,
+  StyleSheet, Text, View, TouchableOpacity, Alert, FlatList,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
@@ -11,28 +11,35 @@ import {
 export default function MemoList(props) {
   const { memos } = props;
   const navigation = useNavigation();
-  return (
-    <View>
-      {memos.map((memo) => (
-        <TouchableOpacity
-          key={memo.id}
-          style={styles.memoListItem}
-          onPress={() => { navigation.navigate('MemoDetail'); }}
-        >
-          <View>
-            <Text style={styles.memoListItemTitle}>{memo.bodyText}</Text>
-            <Text style={styles.memoListItemDate}>{String(memo.updatedAt)}</Text>
-          </View>
-          <TouchableOpacity style={styles.memoDelete}>
-            <Feather
-              name="x"
-              size={16}
-              color="#B0B0B0"
-              onPress={() => { Alert.alert('Are you sure?'); }}
-            />
-          </TouchableOpacity>
+
+  function renderItem({ item }) {
+    return (
+      <TouchableOpacity
+        style={styles.memoListItem}
+        onPress={() => { navigation.navigate('MemoDetail'); }}
+      >
+        <View>
+          <Text style={styles.memoListItemTitle} numberOfLines={1}>{item.bodyText}</Text>
+          <Text style={styles.memoListItemDate}>{String(item.updatedAt)}</Text>
+        </View>
+        <TouchableOpacity style={styles.memoDelete}>
+          <Feather
+            name="x"
+            size={16}
+            color="#B0B0B0"
+            onPress={() => { Alert.alert('Are you sure?'); }}
+          />
         </TouchableOpacity>
-      ))}
+      </TouchableOpacity>
+    );
+  }
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={memos}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+      />
     </View>
   );
 }
@@ -46,6 +53,9 @@ MemoList.propTypes = {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   memoListItem: {
     backgroundColor: '#ffffff',
     flexDirection: 'row',
